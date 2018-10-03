@@ -11,6 +11,6 @@ The first task was to find an architecture that would preform classification as 
 
 
 
-As you can see the preformance was pretty good!
+As you can see the preformance was pretty good, at 97.50% accuracy!
 
 Now, to create an architecture that overfits the data. 
