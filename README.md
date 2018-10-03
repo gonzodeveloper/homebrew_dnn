@@ -9,8 +9,15 @@ To test the Homebrew DNN we used the MNIST handwritted digits dataset (28x28=784
 
 The first task was to find an architecture that would preform classification as best as possible. For this I chose two tanh hidden layers (128, 32 nodes) and a softmax output layer (10 nodes).
 
+![](https://raw.githubusercontent.com/gonzodeveloper/homebrew_dnn/master/imgs/Results_01.png)
+
+As you can see the preformance was pretty good. The model then went on to predict the test data with 97.50% accuracy.
+
+Now, to create an architecture that overfits the data. With the same number of epochs we can get the model to overfit by reducing the hidden layers and updating their size. So lets try 1 tanh hidden layer with 5000 nodes, and a softmax output layer (10 nodes).
+
+![](https://raw.githubusercontent.com/gonzodeveloper/homebrew_dnn/master/imgs/Results_02.png)
+
+While we can get high scores on the training data. Once we run this model on the test set, the accuracy falls to 93.81%.
 
 
-As you can see the preformance was pretty good, at 97.50% accuracy!
 
-Now, to create an architecture that overfits the data. 
