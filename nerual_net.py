@@ -6,7 +6,7 @@ import collections
 class NeuralNet:
     """
     Simple Dense Neural Network. Tuned to run with any given number of layers with arbitrary sizes.
-    Currently supports tanh as an activation function for hidden layers and softmax for output.
+    Currently supports tanh and softmax activation functions.
     """
     class Layer:
         """
@@ -68,20 +68,21 @@ class NeuralNet:
 
             batch_costs = []
             batch_scores  = []
-            for batches in mini_batches:
-                data = np.array([x[0] for x in batches])
-                targets = np.array([x[1] for x in batches])
+            for batch in mini_batches:
+                # Get data and targets for mini batch
+                data = np.array([x[0] for x in batch])
+                targets = np.array([x[1] for x in batch])
 
                 # Run batch through NN and cache the activation results
                 activations, predictions = self._feedforward_and_predict(data)
 
                 # Get training score for mini batch
                 accuracy =  self.score(targets, predictions)
+                batch_scores.append(accuracy)
 
                 # Update weights through SGD and get cross entropy loss
                 cost = self._backpropagate(activations, targets, learning_rate)
                 batch_costs.append(cost)
-                batch_scores.append(accuracy)
 
             validation_costs.append(np.mean(batch_costs))
             prediction_scores.append(np.mean(batch_scores))
@@ -135,7 +136,7 @@ class NeuralNet:
         m = t.shape[0]
         layers_nums = range(len(self.layers))
 
-        # Iterate through layers backwards, get outputs as y and activations of previous layer as a
+        # Iterate through layers backwards, outputs = y, activations of previous = a
         for i in reversed(layers_nums):
             y = activations[i+1]
             a = activations[i]
@@ -157,11 +158,11 @@ class NeuralNet:
 
             deltas.appendleft((weight_grad, bias_grad))
 
-        # Update weights and biases for each layer
+        # Update weights and biases for each layer (also in reverse order)
         for j in reversed(layers_nums):
             weight_grad, bias_grad = deltas[j]
 
-            self.layers[j].weights -=  weight_grad * learning_rate
+            self.layers[j].weights -= weight_grad * learning_rate
             self.layers[j].bias -= bias_grad * learning_rate
 
         return cost
